@@ -54,15 +54,7 @@ input_grid = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
-input_grid = input_grid.split('\n')
-
-grid = []
-for row in input_grid:
-    row = row.split(' ')
-    row = list(map(int, row))
-    grid.append(row)
-
-grid = np.array(grid)
+grid = np.array([list(map(int, row.split(' '))) for row in input_grid.split('\n')])
 
 #grid[row][col]
 n = len(grid[0]) #assumption: grid is size n * n (square)
@@ -102,7 +94,6 @@ for i in range((n-chunk)+1):
         subset = np.zeros(4)
         for x in range(4):
             subset[x] += grid[i+x][j-x]
-        print(subset)
         product = math.prod(subset)
         if product > max_product:
            max_product = product
