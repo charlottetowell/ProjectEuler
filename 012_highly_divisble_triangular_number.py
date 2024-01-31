@@ -16,6 +16,7 @@
 # We can see that 28 is the first triangle number to have over five divisors.
 # What is the value of the first triangle number to have over 500 divisors?
 
+import math
 
 def generate_factors(num):
     #returns all factors for num
@@ -34,13 +35,65 @@ def generate_triangle_number(num):
     return sum(list(range(num+1)))
 
 
-found = False
-i = 1
-limit = 500
-while not found:
-    tr = generate_triangle_number(i)
-    num_factors = len(generate_factors(tr))
-    if num_factors >= limit:
-        print(tr)
-        found = True
-    i+=1
+def solution1():
+    found = False
+    i = 1
+    limit = 500
+    while not found:
+        tr = generate_triangle_number(i)
+        num_factors = len(generate_factors(tr))
+        if num_factors >= limit:
+            print(tr)
+            found = True
+        i+=1
+
+
+### alternate method:
+
+def is_prime(n):
+    #returns TRUE if n is prime
+    if n==2 or n==3:
+        return True
+    if n%2==0 or n<2:
+        return False
+    #loop through odd numbers only
+    for i in range(3, int(n**0.5)+1, 2):
+        if n%i==0:
+            return False    
+
+    return True
+
+def generate_prime_factors(n):
+    factors = []
+    while n % 2 == 0:
+        factors.append(2)
+        n = n / 2
+         
+    for i in range(3,int(math.sqrt(n))+1,2):
+         
+        while n % i== 0:
+            factors.append(i)
+            n = n / i
+             
+    if n > 2:
+        factors.append(n)
+       
+    return factors
+
+def solution2():
+    found = False
+    i = 1
+    limit = 500
+    while not found:
+        tr = generate_triangle_number(i)
+        num_factors = 1
+        prime_factors = generate_prime_factors(tr)
+        for f in set(prime_factors):
+            num_factors *= (prime_factors.count(f)+1)
+        if num_factors >= limit:
+            print(tr)
+            found = True
+        i+=1
+
+#solution1()
+solution2()
